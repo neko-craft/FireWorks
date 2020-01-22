@@ -1,0 +1,87 @@
+buildscript {
+    ext.kotlin_version = '1.3.61'
+    ext.ktor_version = '1.2.3'
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.2'
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.3.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'kotlin'
+apply plugin: 'kotlinx-serialization'
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+group = pluginGroup
+version = pluginVersion
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name = 'destroystokyo-repo'
+        url = 'https://repo.destroystokyo.com/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'papermc'
+        url = 'https://papermc.io/repo/repository/maven-public/'
+    }
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+bukkit {
+    name = pluginName
+    main = 'net.nekocraft.fireworks.Main'
+
+    apiVersion = '1.13'
+
+    website = 'nekocraft.net'
+    author = 'Shirasawa'
+
+    softDepend = ['MCPanelBackend', 'KotlinCore']
+
+    commands {
+        fireworksstart {
+            description = 'Start the performance.'
+            usage = '/fireworksstart'
+        }
+    }
+}
